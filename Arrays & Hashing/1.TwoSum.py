@@ -1,12 +1,10 @@
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        
-        # Hash map to store: value -> index
-        # Key: the number value, Value: its index in the array
+        # Hash map: value -> index
         my_map = {}
         
         for i in range(len(nums)):
-            # Calculate what number we need to pair with nums[i] to reach target
+            # What number do we need to reach target?
             complement = target - nums[i]
             
             # Check if the complement already exists in our hash map
@@ -23,5 +21,7 @@ class Solution:
         # No valid pair found
         return False
 
-# T(n) = O(n) - single pass through the array
-# S(n) = O(n) - hash map stores up to n elements
+# TRICK: Hash map for O(1) lookup. Store each number as we iterate,
+# check if its complement already exists. When found, return indices.
+# T(N) = O(n)
+# S(N) = O(n)

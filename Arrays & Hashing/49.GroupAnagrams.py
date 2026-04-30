@@ -21,5 +21,7 @@ class Solution:
         # Return all anagram groups as a list of lists
         return list(my_dict.values())
 
-# T(n) = O(n * k) - n words, each processing up to k characters
-# S(n) = O(n * k) - storing all strings in the hash map
+# TRICK: Character frequency as key. Sort each word's chars or use
+# count array (26 letters) -> tuple as immutable key. Anagrams share same signature.
+# T(N) = O(n * k)
+# S(N) = O(n * k)

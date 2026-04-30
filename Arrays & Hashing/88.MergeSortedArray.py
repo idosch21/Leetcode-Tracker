@@ -5,8 +5,8 @@ class Solution:
         """
         # Pointers starting from the end of each array
         end1 = m - 1        # Last valid element in nums1
-        end2 = n - 1        # Last element in nums2
-        end_all = m + n - 1 # Last position in the merged nums1
+        end2 = n - 1        #t in nums2
+        end_all = m + n - 1 # Last position in the merge Last elemend nums1
         
         # Merge from the end (right to left) to avoid overwriting nums1 elements
         # This works because nums1 has extra space at the end
@@ -21,7 +21,9 @@ class Solution:
                 end2 -= 1
             end_all -= 1
 
-# T(n) = O(m + n) - single pass through all elements
-# S(n) = O(1) - only using pointer variables, no extra space
+# TRICK: Merge from the end. Compare from right to left to avoid
+# overwriting nums1 elements. Uses extra space at end of nums1.
+# T(N) = O(m + n)
+# S(N) = O(1)
             
         
