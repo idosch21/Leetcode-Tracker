@@ -18,5 +18,8 @@ class Solution:
             
         return max_sum
 
-# T(n) = O(n) - single pass through the array
-# S(n) = O(1) - only using two variables
+# TRICK: Kadane's Algorithm. At each position, decide: start new subarray
+# or extend existing one. Choose max(current_sum + nums[i], nums[i]).
+# Keep track of global max throughout.
+# T(N) = O(n)
+# S(N) = O(1)
