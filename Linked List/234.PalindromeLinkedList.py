@@ -5,39 +5,40 @@
 #         self.next = next
 class Solution:
     def isPalindrome(self, head: Optional[ListNode]) -> bool:
-        #the idea is to find the middle of the list
-        #reverse the second half of the list
-        #check if the first half and the reversed second half are equal
-        #true else false
-        
+        # Step 1: Find the middle using slow/fast pointers
+        # - slow moves 1 step, fast moves 2 steps
+        # - when fast reaches end, slow is at middle
         slow = head
         fast = head
         
-        #finding the middle of the list
         while fast and fast.next:
             slow = slow.next
             fast = fast.next.next
-            
-            
-        #slow reached the half point
+        
+        # Step 2: Reverse the second half starting from 'slow'
         prev = None
         current = slow
         
-        #creating the reversed list
         while current:
             nxt = current.next
             current.next = prev
             prev = current
+            current = nxt
         
-        #now prev is the reversed list
-        left , right = head,prev
+        # Step 3: Compare first half with reversed second half
+        # 'prev' is head of reversed second half
+        left, right = head, prev
         while right:
             if left.val == right.val:
                 left = left.next
-                right=right.next
-                
+                right = right.next
             else:
                 return False
+        
         return True
+
+# TRICK: Find middle with slow/fast, reverse second half, compare.
+# T(N) = O(n)
+# S(N) = O(1)
             
         
