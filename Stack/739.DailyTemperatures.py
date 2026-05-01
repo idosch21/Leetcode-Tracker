@@ -1,38 +1,31 @@
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
-        #brute force for each day go over the array and search for a hotter day
-        #getting TLE
-        #size = len(temperatures)
-        #result = [0]*size
-        #counter = 1
-        #for i in range(len(temperatures)):
-        #    j=i+1
-        #    while j<len(temperatures):
-        #        if temperatures[i]<temperatures[j]:#meaning there is a warmer weather
-        #            #assign the amount of days we calced
-        #            result[i] = counter
-        #            #and finish move to the next i
-        #            break
-        #        else:#not warmer or the same
-        #            counter+=1
-        #        j+=1
-        #    counter = 1
-        #return result
-
-
-        #now we can solve it with stack..
-
+        # Result array initialized to 0 (no warmer day found)
         size = len(temperatures)
-        result = [0]*size
+        result = [0] * size
+        
+        # Stack stores (temperature, index) pairs
+        # Keeps track of days waiting for warmer temperature
         stack = []
-
-
-        for i,t in enumerate(temperatures):
+        
+        # Iterate through each day
+        for i, t in enumerate(temperatures):
+            # While current day is warmer than the day at stack top
+            # Pop and calculate days until warmer weather
             while stack and t > stack[-1][0]:
                 stackTemp, stackInd = stack.pop()
-                result[stackInd] = i-stackInd
-            stack.append([t,i])
-
+                # Days until warmer = current index - popped index
+                result[stackInd] = i - stackInd
+            
+            # Push current day to stack (waiting for warmer day)
+            stack.append((t, i))
+        
+        # Days that never found warmer weather stay 0
         return result
+
+# TRICK: Monotonic decreasing stack. Push indices waiting for warmer day.
+# When warmer day found, pop and calculate distance. Process in single pass.
+# T(N) = O(n) - each element pushed and popped at most once
+# S(N) = O(n)
 
 
