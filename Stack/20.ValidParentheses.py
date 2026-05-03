@@ -27,6 +27,8 @@ class Solution:
                     closer_char = my_stack.pop()
                     if char != mapper[closer_char]:
                         return False
+                else:
+                    return False
         
         # Valid if stack is empty (all brackets matched)
         return False if my_stack else True
