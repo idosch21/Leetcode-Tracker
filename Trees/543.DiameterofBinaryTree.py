@@ -16,7 +16,8 @@ class Solution:
             
             left = dfs(node.left)
             right = dfs(node.right)
-            self.max_diameter = max(self.max_diameter,right+left)                return max(left,right) + 1
+            self.max_diameter = max(self.max_diameter,right+left)               
+            return max(left,right) + 1
 
         dfs(root)
         return self.max_diameter
