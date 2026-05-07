@@ -2,65 +2,81 @@ import collections
 
 class Solution:
     def orangesRotting(self, grid: List[List[int]]) -> int:
-        # Queue for BFS - stores coordinates of rotten oranges
+        """
+        Rotting Oranges: Find the minimum time required for all fresh oranges to rot.
+        
+        TRICK USED:
+        - Multi-Source Breadth-First Search (BFS): Instead of starting BFS from a single point, we initialize the queue with all cells containing rotten oranges (grid value 2).
+        - Level-Order Traversal: We process the queue level by level, where each full level represents exactly one minute of time passing.
+        - Fresh Orange Counter: Tracking the number of fresh oranges at the start allows for an O(1) check at the end to see if any remained untouched.
+        
+        WHY IT WORKS:
+        - BFS is designed to find the shortest path in an unweighted graph. In this grid, the "distance" is time. 
+        - Starting with all rotten oranges simultaneously ensures we find the earliest possible moment each fresh orange is reached by the rot.
+        - By decrementing the fresh_count as we go, we avoid a second full-grid scan at the end.
+        """
+        
+        # Queue for BFS to store coordinates of rotten oranges
         queue = collections.deque()
         
         # Four directions: right, left, down, up
         direction = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         
-        # Count of fresh oranges remaining
+        # Determine grid dimensions and initialize fresh orange counter
         fresh_count = 0
         rows = len(grid)
         cols = len(grid[0])
         
-        # First pass: count fresh oranges and add rotten ones to queue
+        # First pass: Count fresh oranges and collect all initial sources of rot
         for r in range(rows):
             for c in range(cols):
                 if grid[r][c] == 1:
                     fresh_count += 1
                 elif grid[r][c] == 2:
-                    # Add all rotten oranges as starting points
+                    # Add all rotten oranges to the queue as starting points
                     queue.append((r, c))
         
-        # If no fresh oranges, return 0 (already done)
+        # Early exit: if no fresh oranges exist, no time is needed
         if fresh_count == 0:
             return 0
         
-        # Track time in minutes
+        # Track elapsed time in minutes
         minutes = 0
         
-        # BFS: process level by level (each level = 1 minute)
+        # Multi-source BFS: process oranges level by level
         while queue:
-            # Process all oranges that rotted at the same time
+            # size_of_queue captures all oranges that rotted in the same minute
             size_of_queue = len(queue)
             
             for _ in range(size_of_queue):
                 curr_r, curr_c = queue.popleft()
                 
-                # Try all 4 adjacent cells
+                # Check all four neighbors for fresh oranges
                 for dr, dc in direction:
                     new_r = curr_r + dr
                     new_c = curr_c + dc
                     
-                    # Check if within bounds
+                    # Ensure neighbor is within grid bounds
                     if 0 <= new_r < rows and 0 <= new_c < cols:
-                        # If fresh orange, it becomes rotten
+                        # If a fresh orange is found, it becomes rotten
                         if grid[new_r][new_c] == 1:
                             fresh_count -= 1
                             grid[new_r][new_c] = 2
                             queue.append((new_r, new_c))
             
-            # After processing current level, increment minutes
-            # Only if there are more oranges to process
+            # Increment time only if new oranges were added to the queue for the next minute
             if queue:
                 minutes += 1
         
-        # If fresh_count > 0, some oranges couldn't be reached
+        # If any fresh oranges remain, it means they were unreachable by the rot
         return -1 if fresh_count else minutes
 
-# TRICK: Multi-source BFS. Start with all rotten oranges in queue,
-# process level by level. Each level = 1 minute. Use grid modification
-# to mark newly rotten oranges. Check if any fresh remain at end.
-# T(N) = O(m * n) - visit each cell at most once
-# S(N) = O(m * n) - queue can hold all rotten oranges
-        
+# COMPLEXITY ANALYSIS:
+# T(n) = O(M * N) - Time Complexity
+#   - M is rows, N is columns.
+#   - We iterate over the grid once initially to count and find rot.
+#   - Each cell is added to and removed from the queue at most once.
+#
+# S(n) = O(M * N) - Space Complexity
+#   - In the worst case (e.g., all oranges are rotten), the queue will hold M * N elements.
+#   - We modify the grid in-place, so no extra grid storage is required.
