@@ -11,7 +11,6 @@ class Solution:
         if s is None:
             return [""]
         i = 0
-        counter_num_dig = 0
         while(i<len(s)):
             j = i
             while s[j] != '#':

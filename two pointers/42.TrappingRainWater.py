@@ -13,8 +13,6 @@ class Solution:
         
         # Process until pointers meet
         while left < right:
-            # Water level is determined by shorter boundary
-            minHeight = min(maxLeft, maxRight)
             
             # Move pointer with smaller max height
             if maxLeft <= maxRight:

@@ -14,7 +14,7 @@ class Solution:
             if right >=k:
                 if s[right-k] in vowels:
                     current_vowels -=1            
-            max_v = max(max_v,current_vowel)
+            max_v = max(max_v,current_vowels)
             
             if max_v == k:
                 return k
