@@ -1,19 +1,23 @@
 class Solution:
     def numberOfSpecialChars(self, word: str) -> int:
 
-        my_map = defaultdict(list)
+        last_lower = {}
+        first_upper = {}
         result = 0
         
-        for index,letter in enumerate(word):
-            my_map[letter].append(index)
+        for i , letter in enumerate(word):
+            if letter.islower():
+                last_lower[letter] = i
+            else:
+                if letter not in first_upper:
+                    first_upper[letter] = i
+        
             
-        for letter in my_map:
             
-            if not letter.islower():
-                continue
+        for letter in last_lower:
             
-            upper = letter.upper()
-            if upper in my_map:
-                if max(my_map[letter]) < min(my_map(upper)):
+            if letter.upper() in first_upper:
+                upper_letter = letter.upper()
+                if last_lower[letter] < first_upper[upper_letter]:
                     result += 1
         return result
